@@ -1,6 +1,6 @@
 {
   "name": "arib-mpeg2ts-parser",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "d.ts/index.d.ts",
   "files": [
@@ -14,7 +14,7 @@
   "keywords": [
     "mpeg2ts",
     "m2ts",
-    "ts",
+    "ts"
   ],
   "repository": {
     "type": "git",
