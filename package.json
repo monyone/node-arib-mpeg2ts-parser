@@ -33,7 +33,6 @@
     "lint:prettier": "prettier --check src/**/*.ts",
     "clean": "rimraf dist d.ts"
   },
-  "private": true,
   "devDependencies": {
     "@types/node": "12",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
