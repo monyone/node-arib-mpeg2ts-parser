@@ -1,10 +1,10 @@
-import { Transform, TransformCallback } from 'stream'
 import { PACKET_SIZE, SYNC_BYTE } from './ts-packet'
 
-export default class PacketChunker extends Transform {
+export default class PacketQueue {
+  private queue: Buffer[] = [];
   private ascendant: Buffer = Buffer.from([]);
 
-  _transform (chunk: Buffer, encoding: string, callback: TransformCallback): void {
+  push (chunk: Buffer): void {
     const processing = Buffer.concat([this.ascendant, chunk]);
 
     let lastSyncBytePosition = -1;
@@ -13,7 +13,7 @@ export default class PacketChunker extends Transform {
 
       lastSyncBytePosition = i;
       if (i + PACKET_SIZE <= processing.length) {
-        this.push(processing.slice(i, i + PACKET_SIZE));
+        this.queue.push(processing.slice(i, i + PACKET_SIZE));
         lastSyncBytePosition = -1;
       }
       
@@ -25,11 +25,13 @@ export default class PacketChunker extends Transform {
     } else {
       this.ascendant = Buffer.from([]);
     }
-    
-    callback();
   }
 
-  _flush (callback: TransformCallback): void {
-    callback();
+  pop (): Buffer | undefined {
+    return this.queue.shift()
+  }
+
+  isEmpty (): boolean {
+    return this.queue.length == 0;
   }
 }

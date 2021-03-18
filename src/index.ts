@@ -1,4 +1,5 @@
 export * as TSPacket from './ts-packet';
+export { default as TSPacketQueue } from './ts-packet-queue';
 export { default as TSPacketChunker } from './ts-packet-chunker';
 export * as TSSection from './ts-section';
 export { default as TSSectionQueue } from './ts-section-queue';
