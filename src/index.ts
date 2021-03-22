@@ -4,6 +4,7 @@ export { default as TSPacketChunker } from './ts-packet-chunker';
 export * as TSSection from './ts-section';
 export { default as TSSectionQueue } from './ts-section-queue';
 export { default as TSSectionChunker } from './ts-section-chunker';
+export { default as TSSectionPacketizer } from './ts-section-packetizer';
 export  * as TSPES from './ts-pes';
 export { default as TSPESQueue } from './ts-pes-queue';
 export { default as TSPESChunker } from './ts-pes-chunker';

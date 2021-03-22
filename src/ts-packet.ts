@@ -19,6 +19,10 @@ export const pid = (packet: Buffer) => {
   return ((packet[1] & 0x1F) << 8) | packet[2];
 }
 
+export const transport_scrambling_control = (packet: Buffer) => {
+  return (packet[3] & 0xF0) >> 4;  
+}
+
 export const has_adaptation_field = (packet: Buffer) => {
   return (packet[3] & 0x20) != 0;
 }
@@ -30,6 +34,7 @@ export const has_payload = (packet: Buffer) => {
 export const continuity_counter = (packet: Buffer) => {
   return packet[3] & 0x0F;
 }
+
 
 export const adaptation_field_length = (packet: Buffer) => {
   return has_adaptation_field(packet) ? packet[4] : 0;
