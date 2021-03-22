@@ -22,7 +22,7 @@ export default class SectionPacketizer {
       const header = Buffer.from([
         SYNC_BYTE,
         ((transport_error_indicator ? 1 : 0) << 7) | ((begin === 0 ? 1 : 0) << 6) | ((transport_priority ? 1 : 0) << 5) | ((pid & 0x1F00) >> 8),
-        (pid & 0x0F),
+        (pid & 0x00FF),
         (transport_scrambling_control << 6) | (1 << 4) | (continuity_counter & 0x0F),
       ]);
       continuity_counter = (continuity_counter + 1) & 0x0F;
