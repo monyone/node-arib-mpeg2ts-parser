@@ -1,7 +1,7 @@
 export const PES_HEADER_SIZE = 6;
 
 export const packet_start_code_prefix = (pes: Buffer) => {
-  return (pes[0] << 16) | (pes[1] << 8) | pes[0]
+  return (pes[0] << 16) | (pes[1] << 8) | pes[2]
 }
 
 export const stream_id = (pes: Buffer) => {
