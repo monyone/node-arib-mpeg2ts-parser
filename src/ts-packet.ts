@@ -20,7 +20,7 @@ export const pid = (packet: Buffer) => {
 }
 
 export const transport_scrambling_control = (packet: Buffer) => {
-  return (packet[3] & 0xF0) >> 4;  
+  return (packet[3] & 0xC0) >> 6;
 }
 
 export const has_adaptation_field = (packet: Buffer) => {
