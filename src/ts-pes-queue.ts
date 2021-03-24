@@ -42,10 +42,15 @@ export default class SectionQueue {
   }
 
   pop (): Buffer | undefined {
-    return this.queue.shift()
+    return this.queue.shift();
   }
 
   isEmpty (): boolean { 
-    return this.queue.length == 0;
+    return this.queue.length === 0;
+  }
+
+  clear (): void {
+    this.partialPES = Buffer.from([]);
+    this.queue.length = 0;
   }
 }

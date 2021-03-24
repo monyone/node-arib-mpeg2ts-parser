@@ -67,6 +67,11 @@ export default class SectionQueue {
   }
 
   isEmpty (): boolean { 
-    return this.queue.length == 0;
+    return this.queue.length === 0;
+  }
+
+  clear (): void {
+    this.partialSection = Buffer.from([]);
+    this.queue.length = 0;
   }
 }

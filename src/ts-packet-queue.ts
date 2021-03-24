@@ -28,10 +28,15 @@ export default class PacketQueue {
   }
 
   pop (): Buffer | undefined {
-    return this.queue.shift()
+    return this.queue.shift();
   }
 
   isEmpty (): boolean {
-    return this.queue.length == 0;
+    return this.queue.length === 0;
+  }
+
+  clear (): void {
+   this.ascendant = Buffer.from([]);
+   this.queue.length = 0;
   }
 }
