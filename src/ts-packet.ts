@@ -49,14 +49,14 @@ export const has_pcr = (packet: Buffer) => {
 }
 
 export const pcr = (packet: Buffer) => {
-  if (!has_pcr) { return Number.NaN; }
+  if (!has_pcr(packet)) { return Number.NaN; }
 
   let pcr_base = 0;
-  pcr_base = (pcr_base << 8) | ((packet[HEADER_SIZE + 1 + 1] & 0xFF) >> 0);
-  pcr_base = (pcr_base << 8) | ((packet[HEADER_SIZE + 1 + 2] & 0xFF) >> 0);
-  pcr_base = (pcr_base << 8) | ((packet[HEADER_SIZE + 1 + 3] & 0xFF) >> 0);
-  pcr_base = (pcr_base << 8) | ((packet[HEADER_SIZE + 1 + 4] & 0xFF) >> 0);
-  pcr_base = (pcr_base << 8) | ((packet[HEADER_SIZE + 1 + 5] & 0x10) >> 7);
+  pcr_base = (pcr_base * (1 << 8)) + ((packet[HEADER_SIZE + 1 + 1] & 0xFF) >> 0);
+  pcr_base = (pcr_base * (1 << 8)) + ((packet[HEADER_SIZE + 1 + 2] & 0xFF) >> 0);
+  pcr_base = (pcr_base * (1 << 8)) + ((packet[HEADER_SIZE + 1 + 3] & 0xFF) >> 0);
+  pcr_base = (pcr_base * (1 << 8)) + ((packet[HEADER_SIZE + 1 + 4] & 0xFF) >> 0);
+  pcr_base = (pcr_base * (1 << 8)) + ((packet[HEADER_SIZE + 1 + 5] & 0x10) >> 7);
 
   return pcr_base;
 }
