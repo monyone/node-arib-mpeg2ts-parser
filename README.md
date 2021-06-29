@@ -16,7 +16,7 @@ cd node-arib-mpeg2ts-parser
 yarn
 ```
 
-### Compiling aribb24.js library
+### Compiling library
 
 ```bash
 yarn run build
