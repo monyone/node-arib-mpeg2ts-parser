@@ -1,6 +1,6 @@
 {
   "name": "arib-mpeg2ts-parser",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "main": "dist/index.js",
   "types": "d.ts/index.d.ts",
   "files": [

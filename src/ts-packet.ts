@@ -45,7 +45,7 @@ export const pointer_field = (packet: Buffer) => {
 }
 
 export const has_pcr = (packet: Buffer) => {
-  return has_adaptation_field(packet) && (packet[HEADER_SIZE + 1] & 0x10) != 0;
+  return has_adaptation_field(packet) && adaptation_field_length(packet) !== 0 && (packet[HEADER_SIZE + 1] & 0x10) != 0;
 }
 
 export const pcr = (packet: Buffer) => {

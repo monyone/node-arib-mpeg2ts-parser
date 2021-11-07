@@ -11,7 +11,7 @@ import {
 
 const is_complete_pes = (pes: Buffer) => {
   if (PES_packet_length(pes) === 0) { return false; }
-  return (HEADER_SIZE + PES_packet_length(pes) - pes.length) <= 0
+  return (PES_HEADER_SIZE + PES_packet_length(pes) - pes.length) <= 0
 }
 
 export default class PESQueue {
