@@ -9,7 +9,8 @@ import {
   PTS,
   DTS,
   stream_id,  
-  PES_HEADER_SIZE
+  PES_HEADER_SIZE,
+  PES_packet_length
 } from './ts-pes'
 
 export default class PESPacketizer {
@@ -37,7 +38,7 @@ export default class PESPacketizer {
     if (!has_flag) { pts = undefined; dts = undefined; }
 
     const new_PTS = Buffer.from(pts != null ? [
-      ((pts != null ? 0b000100000 : 0) | (dts != null ? 0b00010000 : 0) | (((pts / (1 << 30)) & 0x7) << 1) | 1),
+      ((pts != null ? 0b00100000 : 0) | (dts != null ? 0b00010000 : 0) | (((pts / (1 << 30)) & 0x7) << 1) | 1),
       ((((pts >>> 0) & 0x3FC00000) >> 22)),
       ((((pts >>> 0) & 0x003F8000) >> 15) << 1) | 1,
       ((((pts >>> 0) & 0x00007F80) >>  7)),
@@ -55,21 +56,23 @@ export default class PESPacketizer {
     pes = Buffer.concat([
       pes.slice(0, PES_HEADER_SIZE),
       Buffer.concat(has_flag ? [
-        Buffer.from([(pts != null ? 0b10000000 : 0) | (dts != null ? 0b10000000 : 0), 0]),
+        Buffer.from([0x80, (pts != null ? 0b10000000 : 0) | (dts != null ? 0b01000000 : 0)]),
         Buffer.from([new_PES_header_data_length]),
         new_PTS,
         new_DTS,
       ] : []),
       pes.slice(begin)
     ]);
-    pes[4] = ((pes.length - PES_HEADER_SIZE) & 0xFF00) >> 8;
-    pes[5] = ((pes.length - PES_HEADER_SIZE) & 0x00FF) >> 0;
+    if (PES_packet_length(pes) !== 0) {
+      pes[4] = ((pes.length - PES_HEADER_SIZE) & 0xFF00) >> 8;
+      pes[5] = ((pes.length - PES_HEADER_SIZE) & 0x00FF) >> 0;
+    }
 
     for (let i = 0; i < pes.length; i += PACKET_SIZE - HEADER_SIZE) {
       const payload = pes.slice(i, Math.min(pes.length, i + 184));
       const header = Buffer.from([
         SYNC_BYTE,
-        ((transport_error_indicator ? 1 : 0) << 7) | ((begin === 0 ? 1 : 0) << 6) | ((transport_priority ? 1 : 0) << 5) | ((pid & 0x1F00) >> 8),
+        ((transport_error_indicator ? 1 : 0) << 7) | ((i === 0 ? 1 : 0) << 6) | ((transport_priority ? 1 : 0) << 5) | ((pid & 0x1F00) >> 8),
         (pid & 0x00FF),
         (transport_scrambling_control << 6) | ((PACKET_SIZE - HEADER_SIZE) > payload.length ? 0x30 : 0x10) | (continuity_counter & 0x0F),
       ]);
